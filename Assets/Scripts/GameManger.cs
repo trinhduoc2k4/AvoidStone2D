@@ -9,32 +9,26 @@ public class GameManger : Singleton<GameManger>
     public PlayerSpawn playerSpawn;
     public GameObject gameStartUI, gameUI, gameOverUI;
     float score = 0;
-    bool m_replayBtnClicked;
+    bool m_isRunGame;
+    public float Score { get => score; }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
     public override void Awake()
     {
         MakeSingleton(false);
     }
 
-
     public override void Start()
     {
         base.Start();
-
-        AudioController.Ins.PlayBackgroundMusic();
     }
     private void Update()
     {
-        if(gameUI)
+        if(gameUI && m_isRunGame)
         {
             TextMeshProUGUI scoreText = gameUI.GetComponentInChildren<TextMeshProUGUI>();
             score += Time.deltaTime;
             scoreText.text = Mathf.RoundToInt(score).ToString();
-        }
+        } 
     }
 
     public void GameStart()
@@ -42,6 +36,7 @@ public class GameManger : Singleton<GameManger>
         StartCoroutine(RunGame());
         gameStartUI.SetActive(false);
         gameUI.SetActive(true);
+        m_isRunGame = true;
     }
 
     IEnumerator RunGame()
@@ -54,28 +49,8 @@ public class GameManger : Singleton<GameManger>
     public void ShowGameOverUI()
     {
         gameUI.SetActive(false);
-        gameOverUI.SetActive(true); 
-    }
-
-    public void BackToHome()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void Replay()
-    {
-        m_replayBtnClicked = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (m_replayBtnClicked)
-        {
-            GameStart();
-        }
-
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        gameOverUI.SetActive(true);
+        m_isRunGame = false;
     }
 }
 

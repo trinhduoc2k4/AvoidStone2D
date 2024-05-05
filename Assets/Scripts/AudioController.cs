@@ -18,6 +18,7 @@ public class AudioController : Singleton<AudioController>
     public AudioClip shootingSound;
     public AudioClip winSound;
     public AudioClip loseSound;
+    public AudioClip hitGround;
     public AudioClip[] backgroundMusics;
 
     public override void Start()

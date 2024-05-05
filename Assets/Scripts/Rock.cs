@@ -27,7 +27,8 @@ public class Rock : MonoBehaviour
         if (collision.gameObject.CompareTag(TagConsts.GROUND))
         {
             m_isGrounded = true;    
-            Destroy(gameObject, 1f);    
+            Destroy(gameObject, 1f);
+            AudioController.Ins.PlaySound(AudioController.Ins.hitGround);
         }
     }
 }

@@ -13,7 +13,7 @@ public class RockSpawner : MonoBehaviour
     void Spawner()
     {
         int randomRock = Random.Range(0, rocks.Length);
-        float randomPos = Random.Range(-14f, 14f);
+        float randomPos = Random.Range(-7.5f, 7.5f);
         Instantiate(rocks[randomRock], new Vector3(randomPos, transform.position.y, transform.position.z), Quaternion.identity);    
     }
 
@@ -21,7 +21,7 @@ public class RockSpawner : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(.3f);
             Spawner();
         }
     }

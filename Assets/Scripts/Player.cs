@@ -28,11 +28,19 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(m_isDead && m_rb) m_rb.velocity = new Vector2(0, m_rb.velocity.y);
+
         Move();
     }
 
     private void Move()
     {
+        if(m_isDead) return;    
+
+        Vector2 posLimit = transform.position;
+        posLimit.x = Mathf.Clamp(posLimit.x, -8f, 8f);
+        transform.position = posLimit;
+
         if (m_rb) m_rb.velocity = new Vector2(HorizontalInput, m_rb.velocity.y) * speed;
 
         if (m_anim) m_anim.SetBool("running", true);      
@@ -48,6 +56,8 @@ public class Player : MonoBehaviour
 
     private void Flip()
     {
+        if(m_isDead) return;
+
         if (HorizontalInput < 0) 
             if(transform.localScale.x < 0) transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z); 
             else if (transform.localScale.x > 0) transform.localScale = new Vector3(transform.localScale.x * -1,transform.localScale.y, transform.localScale.z);
@@ -72,6 +82,7 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        m_isDead = true;
         if (m_anim) m_anim.SetTrigger("dead");
         AudioController.Ins.PlaySound(AudioController.Ins.loseSound);
         GameManger.Ins.ShowGameOverUI();
